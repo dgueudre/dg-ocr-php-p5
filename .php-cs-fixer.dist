@@ -1,0 +1,13 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create();
+$config = new PhpCsFixer\Config();
+
+return $config
+    ->setRules([
+        '@Symfony' => true,
+        'no_alternative_syntax' => false,
+        'echo_tag_syntax' => ['format' => 'short', 'shorten_simple_statements_only' => false],
+    ])
+    ->setLineEnding("\n")
+    ->setFinder($finder);

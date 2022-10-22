@@ -1,4 +1,3 @@
-<pre>
 <?php
 
 use App\Controller\AuthController;
@@ -17,11 +16,8 @@ $routes = [
 
 $route = Router::find($_SERVER['REQUEST_URI'], $routes);
 
-if($route) {
+if ($route) {
     echo $route->execute();
 }
 
-
 ?>
-
-</pre>

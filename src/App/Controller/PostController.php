@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Prout\Template;
+
 class PostController
 {
     public function list()
@@ -16,6 +18,6 @@ class PostController
 
     public function edit($params)
     {
-        return 'actionEdit '.$params['id'].' '.$params['tata'];
+        return Template::render('posts.edit', $params);
     }
 }
