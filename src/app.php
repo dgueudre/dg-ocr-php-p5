@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller\AuthController;
+use App\Controller\CmdController;
 use App\Controller\PostController;
 use App\Model\Fixture\UserFixture;
 use Prout\Database;
@@ -28,9 +29,17 @@ $routes = [
     new Route('/posts', PostController::class, 'list'),
     new Route('/posts/:id/edit/:tata', PostController::class, 'edit'),
     new Route('/posts/:id', PostController::class, 'view'),
+    new Route('cmd/fixture/user', CmdController::class, 'test'),
 ];
 
-$route = Router::find($_SERVER['REQUEST_URI'], $routes);
+$url = $_SERVER['REQUEST_URI'] ?? $argv[1] ?? null;
+
+if (!$url) {
+    echo 'bad request' . PHP_EOL;
+    exit(1);
+}
+
+$route = Router::find($url, $routes);
 
 if ($route) {
     echo $route->execute();

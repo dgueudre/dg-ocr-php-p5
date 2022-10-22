@@ -11,7 +11,7 @@ class Template
         }
 
         ob_start();
-        include "../src/App/View/$file.php";
+        include "src/App/View/$file.php";
 
         return ob_get_clean();
     }
