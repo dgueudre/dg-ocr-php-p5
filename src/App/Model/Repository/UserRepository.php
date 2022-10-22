@@ -41,4 +41,18 @@ class UserRepository
             'role' => $user->role,
         ]);
     }
+
+    public static function findOneByEmail($email)
+    {
+        $query = 'SELECT * 
+            FROM user
+            WHERE email = :email;';
+        $statement = Database::get()->prepare($query);
+        $statement->execute([
+            'email' => $email,
+        ]);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, User::class);
+
+        return $statement->fetch();
+    }
 }

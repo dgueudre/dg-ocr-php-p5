@@ -8,6 +8,9 @@ use Prout\DotEnv;
 use Prout\Route;
 use Prout\Router;
 
+
+session_start();
+
 DotEnv::init();
 
 Database::init(

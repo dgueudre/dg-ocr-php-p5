@@ -4,7 +4,7 @@ namespace Prout;
 
 class Template
 {
-    public static function render($file, $params)
+    public static function render($file, $params = [])
     {
         foreach ($params as $key => $value) {
             $$key = $value;
