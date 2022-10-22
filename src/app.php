@@ -2,8 +2,24 @@
 
 use App\Controller\AuthController;
 use App\Controller\PostController;
+use App\Model\Fixture\UserFixture;
+use Prout\Database;
+use Prout\DotEnv;
 use Prout\Route;
 use Prout\Router;
+
+DotEnv::init();
+
+Database::init(
+    DotEnv::get('DB_HOST'),
+    DotEnv::get('DB_NAME'),
+    DotEnv::get('DB_USER'),
+    DotEnv::get('DB_PASS')
+);
+
+UserFixture::run();
+
+DotEnv::init();
 
 $routes = [
     new Route('/', PostController::class, 'list'),
@@ -19,5 +35,3 @@ $route = Router::find($_SERVER['REQUEST_URI'], $routes);
 if ($route) {
     echo $route->execute();
 }
-
-?>
