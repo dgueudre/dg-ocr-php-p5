@@ -7,13 +7,28 @@ use Prout\Database;
 
 class UserRepository
 {
-
-    public static function truncate() {
+    public static function truncate()
+    {
         $query = 'TRUNCATE TABLE user;';
         Database::get()->query($query);
     }
 
-    public static function save(User $user) {
+    public static function create()
+    {
+        $query = 'CREATE TABLE user (
+            id INT AUTO_INCREMENT,
+            lastname VARCHAR(255) NOT NULL,
+            firstname VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            role VARCHAR(255) NOT NULL,
+            PRIMARY KEY (id)
+        );';
+        Database::get()->query($query);
+    }
+
+    public static function save(User $user)
+    {
         $query = 'INSERT 
         INTO user(lastname, firstname, email, password, role)
         VALUES (:lastname, :firstname, :email, :password, :role);';

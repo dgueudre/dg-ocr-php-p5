@@ -3,7 +3,6 @@
 use App\Controller\AuthController;
 use App\Controller\CmdController;
 use App\Controller\PostController;
-use App\Model\Fixture\UserFixture;
 use Prout\Database;
 use Prout\DotEnv;
 use Prout\Route;
@@ -18,8 +17,6 @@ Database::init(
     DotEnv::get('DB_PASS')
 );
 
-UserFixture::run();
-
 DotEnv::init();
 
 $routes = [
@@ -29,7 +26,8 @@ $routes = [
     new Route('/posts', PostController::class, 'list'),
     new Route('/posts/:id/edit/:tata', PostController::class, 'edit'),
     new Route('/posts/:id', PostController::class, 'view'),
-    new Route('cmd/fixture/user', CmdController::class, 'test'),
+    new Route('cmd/users/fixture', CmdController::class, 'userFixture'),
+    new Route('cmd/install', CmdController::class, 'install'),
 ];
 
 $url = $_SERVER['REQUEST_URI'] ?? $argv[1] ?? null;
