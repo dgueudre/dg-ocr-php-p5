@@ -9,6 +9,7 @@ use App\Model\Enum\UserRole;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Model\Repository\UserRepository;
+use Prout\SQL;
 
 class BlogFixture
 {

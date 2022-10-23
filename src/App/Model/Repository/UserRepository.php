@@ -3,7 +3,9 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\User;
+use App\Model\Enum\UserRole;
 use Prout\Database;
+use Prout\SQL;
 
 class UserRepository
 {
@@ -23,7 +25,7 @@ class UserRepository
             firstname VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             password VARCHAR(255) NOT NULL,
-            role VARCHAR(255) NOT NULL,
+            role ' . SQL::enum(UserRole::class) . ' NOT NULL,
             PRIMARY KEY (id)
         );';
         Database::get()->query($query);
