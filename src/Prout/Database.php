@@ -30,4 +30,8 @@ class Database
         }
         return self::$db;
     }
+
+    public static function lastInsertId() : int {
+        return Database::get()->query('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
+    }
 }

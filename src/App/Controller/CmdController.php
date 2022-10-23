@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-use App\Model\Fixture\UserFixture;
+use App\Model\Fixture\BlogFixture;
+use App\Model\Repository\CommentRepository;
+use App\Model\Repository\PostRepository;
 use App\Model\Repository\UserRepository;
 use Prout\Database;
 use Prout\DotEnv;
@@ -11,7 +13,7 @@ class CmdController
 {
     public function userFixture()
     {
-        UserFixture::run();
+        BlogFixture::run();
         return true;
     }
 
@@ -24,8 +26,12 @@ class CmdController
         echo "DATABASE $dbname CREATED !".PHP_EOL;
         UserRepository::create();
         echo "TABLE user CREATED !".PHP_EOL;
-        UserFixture::run();
-        echo "user data INSERTED !".PHP_EOL;
+        PostRepository::create();
+        echo "TABLE post CREATED !".PHP_EOL;
+        CommentRepository::create();
+        echo "TABLE comment CREATED !".PHP_EOL;
+        BlogFixture::run();
+        echo "blog data INSERTED !".PHP_EOL;
         return true;
     }
 }

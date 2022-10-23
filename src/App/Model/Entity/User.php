@@ -2,12 +2,14 @@
 
 namespace App\Model\Entity;
 
+use App\Model\Enum\UserRole;
+
 class User
 {
-    public $id;
-    public $lastname;
-    public $firstname;
-    public $email;
-    public $password;
-    public $role;
+    public int $id;
+    public string $lastname;
+    public string $firstname;
+    public string $email;
+    public string $password;
+    public UserRole $role;
 }

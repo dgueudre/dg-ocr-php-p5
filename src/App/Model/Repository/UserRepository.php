@@ -9,7 +9,9 @@ class UserRepository
 {
     public static function truncate()
     {
-        $query = 'TRUNCATE TABLE user;';
+        $query = 'SET FOREIGN_KEY_CHECKS = 0;
+        TRUNCATE TABLE user;
+        SET FOREIGN_KEY_CHECKS = 1;';
         Database::get()->query($query);
     }
 
@@ -27,7 +29,7 @@ class UserRepository
         Database::get()->query($query);
     }
 
-    public static function save(User $user)
+    public static function save(User $user): User
     {
         $query = 'INSERT 
         INTO user(lastname, firstname, email, password, role)
@@ -38,8 +40,12 @@ class UserRepository
             'firstname' => $user->firstname,
             'email' => $user->email,
             'password' => $user->password,
-            'role' => $user->role,
+            'role' => $user->role->name,
         ]);
+
+        $user->id = Database::lastInsertId();
+
+        return $user;
     }
 
     public static function findOneByEmail($email)
