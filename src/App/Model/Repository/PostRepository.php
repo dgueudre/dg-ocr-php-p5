@@ -48,4 +48,26 @@ class PostRepository
 
         return $post;
     }
+
+    public static function findAll()
+    {
+        $query = 'SELECT * FROM post;';
+        $statement = Database::get()->query($query);
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, Post::class);
+    }
+
+    public static function findOneById($id)
+    {
+        $query = 'SELECT * 
+            FROM post
+            WHERE id = :id;';
+        $statement = Database::get()->prepare($query);
+        $statement->execute([
+            'id' => $id,
+        ]);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, Post::class);
+
+        return $statement->fetch();
+    }
 }

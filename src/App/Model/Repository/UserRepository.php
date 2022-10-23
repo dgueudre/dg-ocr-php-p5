@@ -50,6 +50,20 @@ class UserRepository
         return $user;
     }
 
+    public static function findOneById($id)
+    {
+        $query = 'SELECT * 
+            FROM user
+            WHERE id = :id;';
+        $statement = Database::get()->prepare($query);
+        $statement->execute([
+            'id' => $id,
+        ]);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, User::class);
+
+        return $statement->fetch();
+    }
+
     public static function findOneByEmail($email)
     {
         $query = 'SELECT * 

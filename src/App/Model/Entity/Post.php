@@ -9,6 +9,6 @@ class Post
     public string $intro;
     public string $content;
     public string $created_at;
-    public string $edited_at;
+    public string | null $edited_at;
     public int $author_id;
 }
