@@ -8,8 +8,17 @@ use Prout\DotEnv;
 use Prout\Route;
 use Prout\Router;
 
-
 session_start();
+
+set_error_handler(function ($severity, $message, $filename, $lineno) {
+    throw new ErrorException($message, 0, $severity, $filename, $lineno);
+});
+
+set_exception_handler(function ($e) {
+    echo "<pre>";
+    echo $e;
+    echo "</pre>";
+});
 
 DotEnv::init();
 
@@ -41,6 +50,8 @@ if (!$url) {
 }
 
 $route = Router::find($url, $routes);
+
+
 
 if ($route) {
     echo $route->execute();

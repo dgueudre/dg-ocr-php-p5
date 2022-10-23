@@ -34,7 +34,7 @@ class BlogFixture
         $user->firstname = "Toni";
         $user->email = "toni.wilson@example.com";
         $user->password = "skirt";
-        $user->role = UserRole::ADMIN;
+        $user->role = UserRole::ADMIN->name;
         $user = UserRepository::save($user);
 
         $post = new Post();
@@ -63,7 +63,7 @@ class BlogFixture
         $user->firstname = "Mathew";
         $user->email = "mathew.chapman@example.com";
         $user->password = "trucks";
-        $user->role = UserRole::ADMIN;
+        $user->role = UserRole::ADMIN->name;
         $user = UserRepository::save($user);
 
         $post = new Post();
@@ -105,7 +105,7 @@ class BlogFixture
         $user->firstname = "Shannon";
         $user->email = "shannon.harper@example.com";
         $user->password = "wrestler";
-        $user->role = UserRole::USER;
+        $user->role = UserRole::USER->name;
         $user = UserRepository::save($user);
 
         $comment = new Comment();
@@ -120,7 +120,7 @@ class BlogFixture
         $user->firstname = "Minnie";
         $user->email = "minnie.henry@example.com";
         $user->password = "ventura";
-        $user->role = UserRole::USER;
+        $user->role = UserRole::USER->name;
         $user = UserRepository::save($user);
 
         $comment = new Comment();

@@ -9,7 +9,7 @@ class Comment
     public int  $id;
     public string $comment;
     public string $created_date;
-    public CommentStatus $status;
+    public string $status;
     public int $post_id;
     public int $author_id;
 }

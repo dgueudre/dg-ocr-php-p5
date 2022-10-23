@@ -42,7 +42,7 @@ class UserRepository
             'firstname' => $user->firstname,
             'email' => $user->email,
             'password' => $user->password,
-            'role' => $user->role->name,
+            'role' => $user->role,
         ]);
 
         $user->id = Database::lastInsertId();
