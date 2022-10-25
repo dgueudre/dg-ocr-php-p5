@@ -8,7 +8,7 @@ class DotEnv
 
     public static function init($file = '.env'): array
     {
-        $content =  file_get_contents($file);
+        $content = file_get_contents($file);
         preg_match_all('/(\w+)=(\w*)/', $content, $matches);
         [$_, $keys, $values] = $matches;
         self::$vars = array_combine($keys, $values);
@@ -16,7 +16,7 @@ class DotEnv
         return self::$vars;
     }
 
-    public static function get($name): string | null
+    public static function get($name): string|null
     {
         return self::$vars[$name] ?? null;
     }

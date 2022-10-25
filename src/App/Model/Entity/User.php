@@ -3,15 +3,29 @@
 namespace App\Model\Entity;
 
 use App\Model\Enum\UserRole;
+use Prout\Entity;
 
-class User
+class User extends Entity
 {
     public int $id;
     public string $lastname;
     public string $firstname;
     public string $email;
     public string $password;
-    public string $role;
+    private string $role;
+
+    public static function fromSQL($id, $lastname, $firstname, $email, $password, $role): static
+    {
+        $new = new static();
+        $new->id = $id;
+        $new->lastname = $lastname;
+        $new->firstname = $firstname;
+        $new->email = $email;
+        $new->password = $password;
+        $new->role = $role;
+
+        return $new;
+    }
 
     // public function __construct($id, $lastname, $firstname, $email, $password, $role)
     // {
@@ -23,24 +37,18 @@ class User
     //     $this->setRole($role);
     // }
 
-    public function __set($name, $value)
+    public function setRole(UserRole $role)
     {
-        var_dump('test');
-        $method = 'set'.ucfirst($name);
-        if (method_exists($this, $method)) {
-            $this->$method($value);
-            return ;
-        }
-        $this->$name = $value;
+        $this->role = $role->name;
     }
 
-    public function setRole(UserRole|string $role)
+    public function getRole(): UserRole
     {
-        if (gettype($role) === 'string') {
-            UserRole::cases($role);
-            $this->role = $role;
-        } else {
-            $this->role = $role->name;
-        }
+        return UserRole::from($this->role);
+    }
+
+    public function getSqlRole(): string
+    {
+        return $this->role;
     }
 }

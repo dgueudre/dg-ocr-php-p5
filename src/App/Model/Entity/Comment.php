@@ -2,8 +2,6 @@
 
 namespace App\Model\Entity;
 
-use App\Model\Enum\CommentStatus;
-
 class Comment
 {
     public int  $id;

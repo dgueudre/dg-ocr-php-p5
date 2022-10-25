@@ -32,6 +32,7 @@ class Route
 
         if (empty($matches)) {
             $this->hit = false;
+
             return;
         }
 

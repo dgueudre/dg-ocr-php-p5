@@ -16,6 +16,7 @@ class Database
         $str = strtr('mysql:host={host}', ['{host}' => $host]);
         self::$db = new \PDO($str, $user, $pass);
         self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
         return self::$db;
     }
 
@@ -28,10 +29,27 @@ class Database
             $dbname = self::$dbname;
             self::$db->query("USE $dbname;");
         }
+
         return self::$db;
     }
 
-    public static function lastInsertId() : int {
-        return Database::get()->query('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
+    public static function lastInsertId(): int
+    {
+        return self::get()->query('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
+    }
+
+    public static function fetchAll($query, $params, $class)
+    {
+        $statement = self::get()->prepare($query);
+        $statement->execute($params);
+
+        return $statement->fetchAll(\PDO::FETCH_FUNC, [$class, 'fromSQL']);
+    }
+
+    public static function fetch($query, $params, $class)
+    {
+        $result = self::fetchAll($query, $params, $class);
+
+        return reset($result);
     }
 }

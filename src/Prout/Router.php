@@ -8,7 +8,7 @@ class Router
     {
         foreach ($routes as $route) {
             $route->analyse($uri);
-            if($route->hit()) {
+            if ($route->hit()) {
                 return $route;
             }
         }

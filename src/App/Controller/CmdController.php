@@ -14,6 +14,7 @@ class CmdController
     public function userFixture()
     {
         BlogFixture::run();
+
         return true;
     }
 
@@ -25,13 +26,14 @@ class CmdController
         Database::get(true)->query("CREATE DATABASE IF NOT EXISTS $dbname;");
         echo "DATABASE $dbname CREATED !".PHP_EOL;
         UserRepository::create();
-        echo "TABLE user CREATED !".PHP_EOL;
+        echo 'TABLE user CREATED !'.PHP_EOL;
         PostRepository::create();
-        echo "TABLE post CREATED !".PHP_EOL;
+        echo 'TABLE post CREATED !'.PHP_EOL;
         CommentRepository::create();
-        echo "TABLE comment CREATED !".PHP_EOL;
+        echo 'TABLE comment CREATED !'.PHP_EOL;
         BlogFixture::run();
-        echo "blog data INSERTED !".PHP_EOL;
+        echo 'blog data INSERTED !'.PHP_EOL;
+
         return true;
     }
 }

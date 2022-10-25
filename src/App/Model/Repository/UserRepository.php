@@ -25,7 +25,7 @@ class UserRepository
             firstname VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             password VARCHAR(255) NOT NULL,
-            role ' . SQL::enum(UserRole::class) . ' NOT NULL,
+            role '.SQL::enum(UserRole::class).' NOT NULL,
             PRIMARY KEY (id)
         );';
         Database::get()->query($query);
@@ -42,7 +42,7 @@ class UserRepository
             'firstname' => $user->firstname,
             'email' => $user->email,
             'password' => $user->password,
-            'role' => $user->role,
+            'role' => $user->getSqlRole(),
         ]);
 
         $user->id = Database::lastInsertId();
@@ -59,9 +59,9 @@ class UserRepository
         $statement->execute([
             'id' => $id,
         ]);
-        $statement->setFetchMode(\PDO::FETCH_CLASS, User::class);
+        $result = $statement->fetchAll(\PDO::FETCH_FUNC, [User::class, 'fromSQL']);
 
-        return $statement->fetch();
+        return reset($result);
     }
 
     public static function findOneByEmail($email)

@@ -15,9 +15,9 @@ set_error_handler(function ($severity, $message, $filename, $lineno) {
 });
 
 set_exception_handler(function ($e) {
-    echo "<pre>";
+    echo '<pre>';
     echo $e;
-    echo "</pre>";
+    echo '</pre>';
 });
 
 DotEnv::init();
@@ -45,13 +45,11 @@ $routes = [
 $url = $_SERVER['REQUEST_URI'] ?? $argv[1] ?? null;
 
 if (!$url) {
-    echo 'bad request' . PHP_EOL;
+    echo 'bad request'.PHP_EOL;
     exit(1);
 }
 
 $route = Router::find($url, $routes);
-
-
 
 if ($route) {
     echo $route->execute();

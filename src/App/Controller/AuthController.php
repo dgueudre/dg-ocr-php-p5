@@ -10,14 +10,13 @@ class AuthController
 {
     public function login()
     {
-        if(!Form::validate(['email', 'password'])) {
+        if (!Form::validate(['email', 'password'])) {
             return Template::render('auth.login');
         }
 
         $user = UserRepository::findOneByEmail($_POST['email']);
 
         var_dump($user);
-        
     }
 
     public function register()

@@ -9,7 +9,6 @@ use App\Model\Enum\UserRole;
 use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Model\Repository\UserRepository;
-use Prout\SQL;
 
 class BlogFixture
 {
@@ -19,6 +18,7 @@ class BlogFixture
         if ($nb_char) {
             $text = substr($text, 0, $nb_char);
         }
+
         return $text;
     }
 
@@ -30,25 +30,17 @@ class BlogFixture
 
         // https://randomuser.me/
         $user = new User();
-        $user->lastname = "Wilson";
-        $user->firstname = "Toni";
-        $user->email = "toni.wilson@example.com";
-        $user->password = "skirt";
-        $user->role = UserRole::ADMIN->name;
+        $user->lastname = 'Wilson';
+        $user->firstname = 'Toni';
+        $user->email = 'toni.wilson@example.com';
+        $user->password = 'skirt';
+        $user->role = UserRole::ADMIN;
         $user = UserRepository::save($user);
 
-        $post = new Post();
-        $post->title = self::lorem(25);
-        $post->intro = self::lorem(50);
-        $post->content = self::lorem();
-        $post->author_id = $user->id;
+        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $post = new Post();
-        $post->title = self::lorem(25);
-        $post->intro = self::lorem(50);
-        $post->content = self::lorem();
-        $post->author_id = $user->id;
+        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
         $comment = new Comment();
@@ -57,27 +49,18 @@ class BlogFixture
         $comment->author_id = $user->id;
         $comment = CommentRepository::save($comment);
 
-
         $user = new User();
-        $user->lastname = "Chapman";
-        $user->firstname = "Mathew";
-        $user->email = "mathew.chapman@example.com";
-        $user->password = "trucks";
-        $user->role = UserRole::ADMIN->name;
+        $user->lastname = 'Chapman';
+        $user->firstname = 'Mathew';
+        $user->email = 'mathew.chapman@example.com';
+        $user->password = 'trucks';
+        $user->role = UserRole::ADMIN;
         $user = UserRepository::save($user);
 
-        $post = new Post();
-        $post->title = self::lorem(25);
-        $post->intro = self::lorem(50);
-        $post->content = self::lorem();
-        $post->author_id = $user->id;
+        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $post = new Post();
-        $post->title = self::lorem(25);
-        $post->intro = self::lorem(50);
-        $post->content = self::lorem();
-        $post->author_id = $user->id;
+        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
         $comment = new Comment();
@@ -86,11 +69,7 @@ class BlogFixture
         $comment->author_id = $user->id;
         $comment = CommentRepository::save($comment);
 
-        $post = new Post();
-        $post->title = self::lorem(25);
-        $post->intro = self::lorem(50);
-        $post->content = self::lorem();
-        $post->author_id = $user->id;
+        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
         $comment = new Comment();
@@ -98,14 +77,13 @@ class BlogFixture
         $comment->post_id = $post->id;
         $comment->author_id = $user->id;
         $comment = CommentRepository::save($comment);
-
 
         $user = new User();
-        $user->lastname = "Harper";
-        $user->firstname = "Shannon";
-        $user->email = "shannon.harper@example.com";
-        $user->password = "wrestler";
-        $user->role = UserRole::USER->name;
+        $user->lastname = 'Harper';
+        $user->firstname = 'Shannon';
+        $user->email = 'shannon.harper@example.com';
+        $user->password = 'wrestler';
+        $user->role = UserRole::USER;
         $user = UserRepository::save($user);
 
         $comment = new Comment();
@@ -114,13 +92,12 @@ class BlogFixture
         $comment->author_id = $user->id;
         $comment = CommentRepository::save($comment);
 
-
         $user = new User();
-        $user->lastname = "Henry";
-        $user->firstname = "Minnie";
-        $user->email = "minnie.henry@example.com";
-        $user->password = "ventura";
-        $user->role = UserRole::USER->name;
+        $user->lastname = 'Henry';
+        $user->firstname = 'Minnie';
+        $user->email = 'minnie.henry@example.com';
+        $user->password = 'ventura';
+        $user->role = UserRole::USER;
         $user = UserRepository::save($user);
 
         $comment = new Comment();

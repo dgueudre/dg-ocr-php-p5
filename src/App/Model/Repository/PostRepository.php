@@ -4,6 +4,7 @@ namespace App\Model\Repository;
 
 use App\Model\Entity\Post;
 use Prout\Database;
+use Prout\SQL;
 
 class PostRepository
 {
@@ -31,16 +32,18 @@ class PostRepository
         Database::get()->query($query);
     }
 
-    public static function save(Post $post): Post
+    private static function insert(Post $post): Post
     {
+        $post->created_at = new \DateTime();
         $query = 'INSERT 
         INTO post(title, intro, content, created_at, author_id)
-        VALUES (:title, :intro, :content, NOW(), :author_id);';
+        VALUES (:title, :intro, :content, :created_at, :author_id);';
         $statement = Database::get()->prepare($query);
         $statement->execute([
             'title' => $post->title,
             'intro' => $post->intro,
             'content' => $post->content,
+            'created_at' => SQL::date($post->created_at),
             'author_id' => $post->author_id,
         ]);
 
@@ -49,12 +52,41 @@ class PostRepository
         return $post;
     }
 
+    private static function update(Post $post): Post
+    {
+        $post->edited_at = new \DateTime();
+        $query = 'UPDATE post SET
+                title = :title,
+                intro = :intro,
+                content = :content,
+                edited_at = :edited_at
+            WHERE id = :id;';
+        $statement = Database::get()->prepare($query);
+        $statement->execute([
+            'title' => $post->title,
+            'intro' => $post->intro,
+            'content' => $post->content,
+            'edited_at' => SQL::date($post->edited_at),
+        ]);
+
+        return $post;
+    }
+
+    public static function save(Post $post): Post
+    {
+        if (0 === $post->id) {
+            return self::insert($post);
+        }
+
+        return self::update($post);
+    }
+
     public static function findAll()
     {
         $query = 'SELECT * FROM post;';
         $statement = Database::get()->query($query);
 
-        return $statement->fetchAll(\PDO::FETCH_CLASS, Post::class);
+        return $statement->fetchAll(\PDO::FETCH_FUNC, [Post::class, 'fromSQL']);
     }
 
     public static function findOneById($id)
@@ -66,8 +98,9 @@ class PostRepository
         $statement->execute([
             'id' => $id,
         ]);
-        $statement->setFetchMode(\PDO::FETCH_CLASS, Post::class);
 
-        return $statement->fetch();
+        $result = $statement->fetchAll(\PDO::FETCH_FUNC, [Post::class, 'fromSQL']);
+
+        return reset($result);
     }
 }

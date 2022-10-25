@@ -11,6 +11,7 @@ class PostController
     public function list()
     {
         $posts = PostRepository::findAll();
+
         return Template::render('post.list', [
             'posts' => $posts,
         ]);
@@ -20,6 +21,7 @@ class PostController
     {
         $post = PostRepository::findOneById($params['id']);
         $author = UserRepository::findOneById($post->author_id);
+
         return Template::render('post.view', [
             'post' => $post,
             'author' => $author,

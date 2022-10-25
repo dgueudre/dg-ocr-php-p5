@@ -12,7 +12,8 @@
 	"php-cs-fixer.exclude": [],
 	"php-cs-fixer.executablePath": "/home/yoka45/Projects/tools/php/vendor/bin/php-cs-fixer",
 	"php-cs-fixer.formatHtml": true,
-	"php-cs-fixer.onsave": false,
-	"php-cs-fixer.pathMode": "intersection",
+	"php-cs-fixer.onsave": true,
+	"php-cs-fixer.rules": "@Symfony",
+	"php-cs-fixer.config": ".php-cs-fixer.php;.php-cs-fixer.dist.php;.php_cs;.php_cs.dist",
 	"php.suggest.basic": false
 }

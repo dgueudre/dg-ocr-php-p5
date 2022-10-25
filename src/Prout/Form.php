@@ -12,6 +12,7 @@ class Form
                 return false;
             }
         }
+
         return true;
     }
 }

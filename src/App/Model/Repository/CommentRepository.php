@@ -23,7 +23,7 @@ class CommentRepository
             id INT AUTO_INCREMENT,
             comment VARCHAR(255) NOT NULL,
             created_at VARCHAR(255) NOT NULL,
-            status ' . SQL::enum(CommentStatus::class) . ' NOT NULL,
+            status '.SQL::enum(CommentStatus::class).' NOT NULL,
             post_id INT,
             author_id INT,
             PRIMARY KEY (id),
