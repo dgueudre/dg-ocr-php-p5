@@ -8,47 +8,28 @@ use Prout\Entity;
 class User extends Entity
 {
     public int $id;
-    public string $lastname;
-    public string $firstname;
-    public string $email;
-    public string $password;
-    private string $role;
+    public readonly string $lastname;
+    public readonly string $firstname;
+    public readonly string $email;
+    public readonly string $password;
+    public readonly UserRole $role;
 
-    public static function fromSQL($id, $lastname, $firstname, $email, $password, $role): static
+    public function __construct(string $lastname, string $firstname, string $email, string $password, UserRole $role)
     {
-        $new = new static();
+        $this->id = 0;
+        $this->lastname = $lastname;
+        $this->firstname = $firstname;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+    }
+
+    public static function fromSQL(int $id, string $lastname, string $firstname, string $email, string $password, string $rawRole): static
+    {
+        $role = UserRole::from($rawRole);
+        $new = new static($lastname,$firstname, $email,$password, $role);
         $new->id = $id;
-        $new->lastname = $lastname;
-        $new->firstname = $firstname;
-        $new->email = $email;
-        $new->password = $password;
-        $new->role = $role;
 
         return $new;
-    }
-
-    // public function __construct($id, $lastname, $firstname, $email, $password, $role)
-    // {
-    //     $this->id = $id;
-    //     $this->lastname = $lastname;
-    //     $this->firstname = $firstname;
-    //     $this->email = $email;
-    //     $this->password = $password;
-    //     $this->setRole($role);
-    // }
-
-    public function setRole(UserRole $role)
-    {
-        $this->role = $role->name;
-    }
-
-    public function getRole(): UserRole
-    {
-        return UserRole::from($this->role);
-    }
-
-    public function getSqlRole(): string
-    {
-        return $this->role;
     }
 }

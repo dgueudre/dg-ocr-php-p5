@@ -2,8 +2,8 @@
 
 namespace App\Model\Enum;
 
-enum CommentStatus
+enum CommentStatus: string
 {
-    case PENDING;
-    case CONFIRMED;
+    case PENDING = 'PENDING';
+    case CONFIRMED = 'COMFIRMED';
 }

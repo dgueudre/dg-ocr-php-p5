@@ -29,12 +29,7 @@ class BlogFixture
         UserRepository::truncate();
 
         // https://randomuser.me/
-        $user = new User();
-        $user->lastname = 'Wilson';
-        $user->firstname = 'Toni';
-        $user->email = 'toni.wilson@example.com';
-        $user->password = 'skirt';
-        $user->role = UserRole::ADMIN;
+        $user = new User('Wilson', 'Toni', 'toni.wilson@example.com', 'skirt', UserRole::ADMIN);
         $user = UserRepository::save($user);
 
         $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
@@ -43,18 +38,10 @@ class BlogFixture
         $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $comment = new Comment();
-        $comment->comment = self::lorem(50);
-        $comment->post_id = $post->id;
-        $comment->author_id = $user->id;
+        $comment = new Comment(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $user = new User();
-        $user->lastname = 'Chapman';
-        $user->firstname = 'Mathew';
-        $user->email = 'mathew.chapman@example.com';
-        $user->password = 'trucks';
-        $user->role = UserRole::ADMIN;
+        $user = new User('Chapman', 'Mathew', 'mathew.chapman@example.com', 'trucks', UserRole::ADMIN);
         $user = UserRepository::save($user);
 
         $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
@@ -63,47 +50,25 @@ class BlogFixture
         $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $comment = new Comment();
-        $comment->comment = self::lorem(50);
-        $comment->post_id = $post->id;
-        $comment->author_id = $user->id;
+        $comment = new Comment(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
         $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $comment = new Comment();
-        $comment->comment = self::lorem(50);
-        $comment->post_id = $post->id;
-        $comment->author_id = $user->id;
+        $comment = new Comment(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $user = new User();
-        $user->lastname = 'Harper';
-        $user->firstname = 'Shannon';
-        $user->email = 'shannon.harper@example.com';
-        $user->password = 'wrestler';
-        $user->role = UserRole::USER;
+        $user = new User('Harper', 'Shannon', 'shannon.harper@example.com', 'wrestler', UserRole::USER);
         $user = UserRepository::save($user);
 
-        $comment = new Comment();
-        $comment->comment = self::lorem(50);
-        $comment->post_id = $post->id;
-        $comment->author_id = $user->id;
+        $comment = new Comment(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $user = new User();
-        $user->lastname = 'Henry';
-        $user->firstname = 'Minnie';
-        $user->email = 'minnie.henry@example.com';
-        $user->password = 'ventura';
-        $user->role = UserRole::USER;
+        $user = new User('Henry', 'Minnie', 'minnie.henry@example.com', 'ventura', UserRole::USER);
         $user = UserRepository::save($user);
 
-        $comment = new Comment();
-        $comment->comment = self::lorem(50);
-        $comment->post_id = $post->id;
-        $comment->author_id = $user->id;
+        $comment = new Comment(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
     }
 }

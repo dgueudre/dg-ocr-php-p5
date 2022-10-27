@@ -21,22 +21,15 @@ class Post
         $this->author_id = $author_id;
     }
 
-    public static function fromSQL(
-        int $id,
-        string $title,
-        string $intro,
-        string $content,
-        string $created_at,
-        string|null $edited_at,
-        int $author_id
-    ): static {
-        $post = new static($title, $intro, $content, $author_id);
-        $post->id = $id;
-        $post->created_at = new \DateTime($created_at);
+    public static function fromSQL(int $id, string $title, string $intro, string $content, string $created_at, string|null $edited_at, int $author_id): static
+    {
+        $new = new static($title, $intro, $content, $author_id);
+        $new->id = $id;
+        $new->created_at = new \DateTime($created_at);
         if ($edited_at) {
             $edited_at = new \DateTime($edited_at);
         }
 
-        return $post;
+        return $new;
     }
 }
