@@ -1,4 +1,7 @@
-
+## Configuration de developpement
+```shell
+composer global require friendsofphp/php-cs-fixer
+```
 ## Installation du projet
 
 1. Génération de l'autoloader :
