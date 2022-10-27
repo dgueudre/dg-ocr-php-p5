@@ -26,7 +26,7 @@ php -S localhost:8080 -t public/
 ```
 
 ## TODO
-* le truc de selection de la bdd est pourri
+* le truc de selection de la bdd est pourri / splitter en 2 classes ?
 * la classe Prout\SQL est nulle, il faut trouver autre chose.. dans Database ?
 * la classe Pourt\Form est pas top
 * faire un contexte pour la ligne de commande
