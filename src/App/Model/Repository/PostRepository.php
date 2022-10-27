@@ -13,7 +13,7 @@ class PostRepository
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
         TRUNCATE TABLE post;
         SET FOREIGN_KEY_CHECKS = 1;';
-        Database::get()->query($query);
+        Database::execute($query);
     }
 
     public static function create()
@@ -29,17 +29,18 @@ class PostRepository
             PRIMARY KEY (id),
             CONSTRAINT post_user_FK FOREIGN KEY(author_id) REFERENCES user(id)
         );';
-        Database::get()->query($query);
+        Database::execute($query);
     }
 
     private static function insert(Post $post): Post
     {
         $post->created_at = new \DateTime();
+
         $query = 'INSERT 
         INTO post(title, intro, content, created_at, author_id)
         VALUES (:title, :intro, :content, :created_at, :author_id);';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
+
+        $post->id = Database::insert($query, [
             'title' => $post->title,
             'intro' => $post->intro,
             'content' => $post->content,
@@ -55,18 +56,19 @@ class PostRepository
     private static function update(Post $post): Post
     {
         $post->edited_at = new \DateTime();
+
         $query = 'UPDATE post SET
                 title = :title,
                 intro = :intro,
                 content = :content,
                 edited_at = :edited_at
             WHERE id = :id;';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
-            'title' => $post->title,
-            'intro' => $post->intro,
-            'content' => $post->content,
-            'edited_at' => SQL::date($post->edited_at),
+
+        Database::execute($query, [
+           'title' => $post->title,
+           'intro' => $post->intro,
+           'content' => $post->content,
+           'edited_at' => SQL::date($post->edited_at),
         ]);
 
         return $post;
@@ -84,9 +86,8 @@ class PostRepository
     public static function findAll()
     {
         $query = 'SELECT * FROM post;';
-        $statement = Database::get()->query($query);
 
-        return $statement->fetchAll(\PDO::FETCH_FUNC, [Post::class, 'fromSQL']);
+        return Database::fetchAll($query, [], Post::class);
     }
 
     public static function findOneById($id)
@@ -94,13 +95,9 @@ class PostRepository
         $query = 'SELECT * 
             FROM post
             WHERE id = :id;';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
+
+        return Database::fetch($query, [
             'id' => $id,
-        ]);
-
-        $result = $statement->fetchAll(\PDO::FETCH_FUNC, [Post::class, 'fromSQL']);
-
-        return reset($result);
+        ], Post::class);
     }
 }

@@ -14,7 +14,7 @@ class CommentRepository
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
         TRUNCATE TABLE comment;
         SET FOREIGN_KEY_CHECKS = 1;';
-        Database::get()->query($query);
+        Database::execute($query);
     }
 
     public static function create()
@@ -30,7 +30,7 @@ class CommentRepository
             CONSTRAINT comment_post_FK FOREIGN KEY(post_id) REFERENCES post(id),
             CONSTRAINT comment_user_FK FOREIGN KEY(author_id) REFERENCES user(id)
         );';
-        Database::get()->query($query);
+        Database::execute($query);
     }
 
     public static function save(Comment $comment): Comment
@@ -38,15 +38,13 @@ class CommentRepository
         $query = 'INSERT 
         INTO comment(comment, created_at, status, post_id, author_id)
         VALUES (:comment, NOW(), :status, :post_id, :author_id);';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
+
+        $comment->id = Database::insert($query, [
             'comment' => $comment->comment,
             'status' => CommentStatus::PENDING->name,
             'post_id' => $comment->post_id,
             'author_id' => $comment->author_id,
         ]);
-
-        $comment->id = Database::lastInsertId();
 
         return $comment;
     }

@@ -14,7 +14,7 @@ class UserRepository
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
         TRUNCATE TABLE user;
         SET FOREIGN_KEY_CHECKS = 1;';
-        Database::get()->query($query);
+        Database::execute($query);
     }
 
     public static function create()
@@ -28,7 +28,7 @@ class UserRepository
             role '.SQL::enum(UserRole::class).' NOT NULL,
             PRIMARY KEY (id)
         );';
-        Database::get()->query($query);
+        Database::execute($query);
     }
 
     public static function save(User $user): User
@@ -36,16 +36,14 @@ class UserRepository
         $query = 'INSERT 
         INTO user(lastname, firstname, email, password, role)
         VALUES (:lastname, :firstname, :email, :password, :role);';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
+
+        $user->id = Database::insert($query, [
             'lastname' => $user->lastname,
             'firstname' => $user->firstname,
             'email' => $user->email,
             'password' => $user->password,
             'role' => $user->role->name,
         ]);
-
-        $user->id = Database::lastInsertId();
 
         return $user;
     }
@@ -55,13 +53,10 @@ class UserRepository
         $query = 'SELECT * 
             FROM user
             WHERE id = :id;';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
-            'id' => $id,
-        ]);
-        $result = $statement->fetchAll(\PDO::FETCH_FUNC, [User::class, 'fromSQL']);
 
-        return reset($result);
+        return Database::fetch($query, [
+            'id' => $id,
+        ], User::class);
     }
 
     public static function findOneByEmail($email)
@@ -69,12 +64,9 @@ class UserRepository
         $query = 'SELECT * 
             FROM user
             WHERE email = :email;';
-        $statement = Database::get()->prepare($query);
-        $statement->execute([
-            'email' => $email,
-        ]);
-        $statement->setFetchMode(\PDO::FETCH_CLASS, User::class);
 
-        return $statement->fetch();
+        return Database::fetch($query, [
+            'email' => $email,
+        ], User::class);
     }
 }

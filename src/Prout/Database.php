@@ -35,13 +35,27 @@ class Database
 
     public static function lastInsertId(): int
     {
-        return self::get()->query('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
+        return self::execute('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
+    }
+
+    public static function execute($query, $params = []): \PDOStatement
+    {
+        $statement = self::get()->prepare($query);
+        $statement->execute($params);
+
+        return $statement;
+    }
+
+    public static function insert($query, $params): int
+    {
+        self::execute($query, $params);
+
+        return self::lastInsertId();
     }
 
     public static function fetchAll($query, $params, $class)
     {
-        $statement = self::get()->prepare($query);
-        $statement->execute($params);
+        $statement = self::execute($query, $params);
 
         return $statement->fetchAll(\PDO::FETCH_FUNC, [$class, 'fromSQL']);
     }
