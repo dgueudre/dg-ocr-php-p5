@@ -34,6 +34,7 @@ DotEnv::init();
 $routes = [
     new Route('/', PostController::class, 'list'),
     new Route('/login', AuthController::class, 'login'),
+    new Route('/logout', AuthController::class, 'logout'),
     new Route('/register', AuthController::class, 'register'),
     new Route('/posts', PostController::class, 'list'),
     new Route('/posts/:id/edit/:tata', PostController::class, 'edit'),

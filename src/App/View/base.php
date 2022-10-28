@@ -11,7 +11,9 @@
 </head>
 
 <body>
-	toto
+	<?= self::render('navbar', ['user' => $_SESSION['user'] ?? false]); ?>
+	<?= self::render('user', ['user' => $_SESSION['user'] ?? false]); ?>
+	<?= self::render('alerts'); ?>
 	<?= $content; ?>
 </body>
 
