@@ -9,5 +9,6 @@
 	"php-cs-fixer.executablePath": "//home/yoka45/.config/composer/vendor/bin/php-cs-fixer",
 	"php-cs-fixer.formatHtml": true,
 	"php-cs-fixer.onsave": true,
+	"php-cs-fixer.config": ".vscode/.php-cs-fixer.php",
 	"php.suggest.basic": false
 }
