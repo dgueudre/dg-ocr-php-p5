@@ -21,9 +21,9 @@ class CmdController
     public function install()
     {
         $dbname = DotEnv::get('DB_NAME');
-        Database::get(true)->query("DROP DATABASE IF EXISTS $dbname;");
+        Database::execute("DROP DATABASE IF EXISTS $dbname;", [], false);
         echo "DATABASE $dbname DROP !".PHP_EOL;
-        Database::get(true)->query("CREATE DATABASE IF NOT EXISTS $dbname;");
+        Database::execute("CREATE DATABASE IF NOT EXISTS $dbname;", [], false);
         echo "DATABASE $dbname CREATED !".PHP_EOL;
         UserRepository::create();
         echo 'TABLE user CREATED !'.PHP_EOL;

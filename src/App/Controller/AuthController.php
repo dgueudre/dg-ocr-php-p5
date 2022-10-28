@@ -14,7 +14,7 @@ class AuthController
             return Template::render('auth.login');
         }
 
-        $user = UserRepository::findOneByEmail($_POST['email']);
+        $user = UserRepository::findOneByCredentials($_POST['email'], $_POST['password']);
 
         var_dump($user);
     }

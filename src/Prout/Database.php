@@ -4,33 +4,61 @@ namespace Prout;
 
 class Database
 {
-    private static \PDO $db;
-    private static string $dbname;
-    private static bool $selected = false;
+    private static $host;
+    private static $dbname;
+    private static $user;
+    private static $pass;
 
-    public static function init($host, $dbname, $user, $pass): \PDO
+    private static \PDO $connection;
+    private static bool $dbSelected = false;
+
+    public static function init($host, $dbname, $user, $pass): void
     {
+        self::$host = $host;
         self::$dbname = $dbname;
-
-        // $str = strtr('mysql:host={host};dbname={db}', ['{host}' => $host, '{db}' => $db ]);
-        $str = strtr('mysql:host={host}', ['{host}' => $host]);
-        self::$db = new \PDO($str, $user, $pass);
-        self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-        return self::$db;
+        self::$user = $user;
+        self::$pass = $pass;
     }
 
-    public static function get(bool $nodb = false): \PDO
+    private static function connect(bool $needDb = true): \PDO
     {
-        if ($nodb) {
-            return self::$db;
+        if ($needDb) {
+            $str = strtr('mysql:host={host};dbname={dbname}', ['{host}' => self::$host, '{dbname}' => self::$dbname]);
+            self::$dbSelected = true;
+        } else {
+            $str = strtr('mysql:host={host}', ['{host}' => self::$host]);
+            self::$dbSelected = false;
         }
-        if (!self::$selected) {
+        self::$connection = new \PDO($str, self::$user, self::$pass);
+        self::$connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        return self::$connection;
+    }
+
+    private static function selectDb(): \PDO
+    {
+        if (!isset(self::$connection)) {
+            return self::connect(true);
+        }
+        if (!self::$dbSelected) {
             $dbname = self::$dbname;
-            self::$db->query("USE $dbname;");
+            self::$connection->query("USE $dbname;");
+            self::$dbSelected = true;
         }
 
-        return self::$db;
+        return self::$connection;
+    }
+
+    private static function get(bool $needDb = true): \PDO
+    {
+        if ($needDb) {
+            return self::selectDb();
+        }
+        if (!isset(self::$connection)) {
+            return self::connect(false);
+        }
+
+        return self::$connection;
     }
 
     public static function lastInsertId(): int
@@ -38,9 +66,9 @@ class Database
         return self::execute('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
     }
 
-    public static function execute($query, $params = []): \PDOStatement
+    public static function execute($query, $params = [], $needDb = true): \PDOStatement
     {
-        $statement = self::get()->prepare($query);
+        $statement = self::get($needDb)->prepare($query);
         $statement->execute($params);
 
         return $statement;
@@ -62,8 +90,13 @@ class Database
 
     public static function fetch($query, $params, $class)
     {
-        $result = self::fetchAll($query, $params, $class);
+        $statement = self::execute($query, $params);
+        $result = $statement->fetch(\PDO::FETCH_NUM);
 
-        return reset($result);
+        if (!$result) {
+            return false;
+        }
+
+        return $class::fromSQL(...$result);
     }
 }

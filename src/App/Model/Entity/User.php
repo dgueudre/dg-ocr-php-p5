@@ -23,13 +23,4 @@ class User extends Entity
         $this->password = $password;
         $this->role = $role;
     }
-
-    public static function fromSQL(int $id, string $lastname, string $firstname, string $email, string $password, string $rawRole): static
-    {
-        $role = UserRole::from($rawRole);
-        $new = new static($lastname,$firstname, $email,$password, $role);
-        $new->id = $id;
-
-        return $new;
-    }
 }

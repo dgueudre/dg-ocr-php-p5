@@ -9,6 +9,15 @@ use Prout\SQL;
 
 class UserRepository
 {
+    public static function fromSQL(int $id, string $lastname, string $firstname, string $email, string $password, string $rawRole): User
+    {
+        $role = UserRole::from($rawRole);
+        $new = new User($lastname, $firstname, $email, $password, $role);
+        $new->id = $id;
+
+        return $new;
+    }
+
     public static function truncate()
     {
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
@@ -41,7 +50,7 @@ class UserRepository
             'lastname' => $user->lastname,
             'firstname' => $user->firstname,
             'email' => $user->email,
-            'password' => $user->password,
+            'password' => password_hash($user->password, PASSWORD_DEFAULT),
             'role' => $user->role->name,
         ]);
 
@@ -56,17 +65,23 @@ class UserRepository
 
         return Database::fetch($query, [
             'id' => $id,
-        ], User::class);
+        ], self::class);
     }
 
-    public static function findOneByEmail($email)
+    public static function findOneByCredentials($email, $password)
     {
         $query = 'SELECT * 
             FROM user
             WHERE email = :email;';
 
-        return Database::fetch($query, [
+        $user = Database::fetch($query, [
             'email' => $email,
-        ], User::class);
+        ], self::class);
+
+        if (!$user) {
+            return false;
+        }
+
+        return password_verify($password, $user->password) ? $user : false;
     }
 }

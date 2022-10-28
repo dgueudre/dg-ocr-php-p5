@@ -21,14 +21,4 @@ class Comment
         $this->post_id = $post_id;
         $this->author_id = $author_id;
     }
-
-    public static function fromSQL(int $id, string $comment, string $created_at, string $rawStatus, string $post_id, int $author_id): static
-    {
-        $new = new static($comment, $post_id, $author_id);
-        $new->status = CommentStatus::from($rawStatus);
-        $new->id = $id;
-        $new->created_at = new \DateTime($created_at);
-
-        return $new;
-    }
 }

@@ -9,6 +9,16 @@ use Prout\SQL;
 
 class CommentRepository
 {
+    public static function fromSQL(int $id, string $comment, string $created_at, string $rawStatus, string $post_id, int $author_id): Comment
+    {
+        $new = new Comment($comment, $post_id, $author_id);
+        $new->status = CommentStatus::from($rawStatus);
+        $new->id = $id;
+        $new->created_at = new \DateTime($created_at);
+
+        return $new;
+    }
+
     public static function truncate()
     {
         $query = 'SET FOREIGN_KEY_CHECKS = 0;

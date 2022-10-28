@@ -8,6 +8,18 @@ use Prout\SQL;
 
 class PostRepository
 {
+    public static function fromSQL(int $id, string $title, string $intro, string $content, string $created_at, string|null $edited_at, int $author_id): Post
+    {
+        $new = new Post($title, $intro, $content, $author_id);
+        $new->id = $id;
+        $new->created_at = new \DateTime($created_at);
+        if ($edited_at) {
+            $edited_at = new \DateTime($edited_at);
+        }
+
+        return $new;
+    }
+
     public static function truncate()
     {
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
@@ -87,7 +99,7 @@ class PostRepository
     {
         $query = 'SELECT * FROM post;';
 
-        return Database::fetchAll($query, [], Post::class);
+        return Database::fetchAll($query, [], self::class);
     }
 
     public static function findOneById($id)
@@ -98,6 +110,6 @@ class PostRepository
 
         return Database::fetch($query, [
             'id' => $id,
-        ], Post::class);
+        ], self::class);
     }
 }
