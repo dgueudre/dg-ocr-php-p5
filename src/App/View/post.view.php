@@ -7,4 +7,4 @@
 <span><?= $author->firstname; ?></span>
 <?php $content = ob_get_clean(); ?>
 
-<?= self::render('base', ['content' => $content, 'title' => 'Courou']); ?>
+<?= self::render('common.base', ['content' => $content, 'title' => 'Courou']); ?>

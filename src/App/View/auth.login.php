@@ -11,7 +11,7 @@
 <?php $content = ob_get_clean(); ?>
 
 
-<?= self::render('base', [
+<?= self::render('common.base', [
     'content' => $content,
     'title' => 'Courou',
 ]); ?>

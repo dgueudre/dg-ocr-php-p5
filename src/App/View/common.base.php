@@ -11,9 +11,9 @@
 </head>
 
 <body>
-	<?= self::render('navbar', ['user' => $_SESSION['user'] ?? false]); ?>
-	<?= self::render('user', ['user' => $_SESSION['user'] ?? false]); ?>
-	<?= self::render('alerts'); ?>
+	<?= self::render('common.navbar', ['user' => $_SESSION['user'] ?? false]); ?>
+	<?= self::render('common.user', ['user' => $_SESSION['user'] ?? false]); ?>
+	<?= self::render('common.alerts'); ?>
 	<?= $content; ?>
 </body>
 

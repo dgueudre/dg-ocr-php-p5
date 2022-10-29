@@ -5,4 +5,4 @@
 <a href="/posts/<?= $post->id; ?>">Voir plus</a>
 <?php $content = ob_get_clean(); ?>
 
-<?= self::render('base', ['content' => $content, 'title' => 'Courou']); ?>
+<?= self::render('common.base', ['content' => $content, 'title' => 'Courou']); ?>
