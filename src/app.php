@@ -31,6 +31,8 @@ Database::init(
 
 DotEnv::init();
 
+$_SESSION['alerts'] = $_SESSION['alerts'] ?? [];
+
 $routes = [
     new Route('/', PostController::class, 'list'),
     new Route('/login', AuthController::class, 'login'),

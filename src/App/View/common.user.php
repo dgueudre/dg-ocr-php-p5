@@ -1,5 +1,3 @@
 <?php if($user): ?>
-<div>
-	Bonjour <?=$user->firstname; ?>
-</div>
+<div>Bonjour <?=$user->firstname; ?></div>
 <?php endif; ?>

@@ -68,15 +68,20 @@ class UserRepository
         ], self::class);
     }
 
-    public static function findOneByCredentials($email, $password)
+    public static function findOneByEmail($email)
     {
         $query = 'SELECT * 
-            FROM user
-            WHERE email = :email;';
+        FROM user
+        WHERE email = :email;';
 
-        $user = Database::fetch($query, [
+        return Database::fetch($query, [
             'email' => $email,
         ], self::class);
+    }
+
+    public static function findOneByCredentials($email, $password)
+    {
+        $user = self::findOneByEmail($email);
 
         if (!$user) {
             return false;

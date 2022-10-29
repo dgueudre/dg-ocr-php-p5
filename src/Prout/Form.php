@@ -2,17 +2,10 @@
 
 namespace Prout;
 
-class Form
+abstract class Form
 {
-    public static function validate($fields = []): bool
+    public function isSubmitted()
     {
-        foreach ($fields as $name) {
-            $value = $_POST[$name] ?? '';
-            if (!$value) {
-                return false;
-            }
-        }
-
-        return true;
+        return !empty($_POST);
     }
 }

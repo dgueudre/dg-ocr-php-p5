@@ -2,29 +2,39 @@
 
 namespace App\Controller;
 
+use App\Controller\Form\LoginForm;
+use App\Controller\Form\RegisterForm;
+use App\Model\Entity\User;
+use App\Model\Enum\UserRole;
 use App\Model\Repository\UserRepository;
 use Prout\Alert;
-use Prout\Form;
 use Prout\Template;
 
 class AuthController
 {
     public function login()
     {
-        if (!Form::validate(['email', 'password'])) {
-            return Template::render('auth.login');
+        $form = new LoginForm();
+
+        if (!$form->isSubmitted()) {
+            return Template::render('auth.login', ['form' => $form]);
+        }
+        if (!$form->isValid()) {
+            array_push($_SESSION['alerts'], new Alert('Vous devez remplir tous les champs'));
+
+            return Template::render('auth.login', ['form' => $form]);
         }
 
-        $user = UserRepository::findOneByCredentials($_POST['email'], $_POST['password']);
+        $user = UserRepository::findOneByCredentials($form->email, $form->password);
 
         if (!$user) {
-            $_SESSION['alerts'] = $_SESSION['alerts'] ?? [];
             array_push($_SESSION['alerts'], new Alert('Identifiants incorrects'));
-            header('location: /login');
-        } else {
-            $_SESSION['user'] = $user;
-            header('location: /');
+
+            return Template::render('auth.login', ['form' => $form]);
         }
+
+        $_SESSION['user'] = $user;
+        header('location: /');
     }
 
     public function logout()
@@ -37,6 +47,30 @@ class AuthController
 
     public function register()
     {
-        return 'actionRegister';
+        $form = new RegisterForm();
+
+        if (!$form->isSubmitted()) {
+            return Template::render('auth.register', ['form' => $form]);
+        }
+        if (!$form->isValid()) {
+            array_push($_SESSION['alerts'], new Alert('Saisie incorrecte'));
+
+            return Template::render('auth.register', ['form' => $form]);
+        }
+
+        $exists = UserRepository::findOneByEmail($form->email);
+
+        if ($exists) {
+            array_push($_SESSION['alerts'], new Alert('L email est déjà utilisé'));
+
+            return Template::render('auth.register', ['form' => $form]);
+        }
+
+        $user = new User($form->lastname, $form->firstname, $form->email, $form->password, UserRole::USER);
+
+        UserRepository::save($user);
+
+        $_SESSION['user'] = $user;
+        header('location: /');
     }
 }
