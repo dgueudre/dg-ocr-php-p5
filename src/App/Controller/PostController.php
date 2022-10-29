@@ -33,51 +33,69 @@ class PostController
         ]);
     }
 
-    public function edit($params)
+    private function form($mode, $label_action, $back_url, $id = 0)
     {
-        $id = $params['id'];
         /** @var User $user */
         $user = $_SESSION['user'] ?? false;
 
         if (!$user) {
-            array_push($_SESSION['alerts'], new Alert('Vous devez être connecté pour modifier un post'));
-            header(strtr('location: /posts/{id}', ['{id}' => $id]));
+            array_push($_SESSION['alerts'], new Alert("Vous devez être connecté pour $label_action un post"));
+            header('location: '.$back_url);
 
             return;
         }
 
         if (UserRole::ADMIN !== $user->role) {
-            array_push($_SESSION['alerts'], new Alert('Vous n avez pas les droits de modifier un post'));
-            header(strtr('location: /posts/{id}', ['{id}' => $id]));
+            array_push($_SESSION['alerts'], new Alert("Vous n'avez pas les droits de $label_action un post"));
+            header('location: '.$back_url);
 
             return;
         }
 
-        $post = PostRepository::findOneById($id);
+        if ('create' === $mode) {
+            $post = null;
+        } else {
+            $post = PostRepository::findOneById($id);
 
-        if (!$post) {
-            array_push($_SESSION['alerts'], new Alert('Post introuvable'));
-            header('location: /posts');
+            if (!$post) {
+                array_push($_SESSION['alerts'], new Alert('Post introuvable'));
+                header('location: /posts');
 
-            return;
+                return;
+            }
         }
 
         $form = new PostForm($post);
 
         if (!$form->isSubmitted()) {
-            return Template::render('post.form', ['mode' => 'edit', 'form' => $form, 'post' => $post]);
+            return Template::render('post.form', ['mode' => $mode, 'form' => $form, 'post' => $post]);
         }
         if (!$form->isValid()) {
             array_push($_SESSION['alerts'], new Alert('Saisie incorrecte'));
 
-            return Template::render('post.form', ['mode' => 'edit', 'form' => $form, 'post' => $post]);
+            return Template::render('post.form', ['mode' => $mode, 'form' => $form, 'post' => $post]);
         }
 
-        $post->modify($form->title, $form->intro, $form->content);
-
-        // $post = new Post($form->title, $form->intro, $form->content, $user->id);
+        if ('create' === $mode) {
+            $post = new Post($form->title, $form->intro, $form->content, $user->id);
+        } else {
+            $post->modify($form->title, $form->intro, $form->content);
+        }
 
         $post = PostRepository::save($post);
         header(strtr('location: /posts/{id}', ['{id}' => $post->id]));
+    }
+
+    public function create()
+    {
+        return self::form('create', 'créer', '/posts');
+    }
+
+    public function edit($params)
+    {
+        $id = $params['id'];
+        $back_url = strtr('/posts/{id}', ['{id}' => $id]);
+
+        return self::form('edit', 'modifier', $back_url, $id);
     }
 }

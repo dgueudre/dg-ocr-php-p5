@@ -11,7 +11,7 @@ class PostForm extends Form
     public string $intro = '';
     public string $content = '';
 
-    public function __construct(?Post $post)
+    public function __construct(?Post $post = null)
     {
         if ($this->isSubmitted()) {
             $this->title = $_POST['title'] ?? '';
