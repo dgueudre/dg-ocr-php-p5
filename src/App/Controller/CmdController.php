@@ -11,13 +11,6 @@ use Prout\DotEnv;
 
 class CmdController
 {
-    public function userFixture()
-    {
-        BlogFixture::run();
-
-        return true;
-    }
-
     public function install()
     {
         $dbname = DotEnv::get('DB_NAME');

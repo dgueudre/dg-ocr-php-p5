@@ -17,7 +17,7 @@ Editer le ficher .env afin de configurer l'environnement
 
 3. Installation de la bdd :
 ```shell
-php php public/index.php cmd/install
+php php public/index.php x/install
 ```
 
 ## Lancement du serveur de test

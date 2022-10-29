@@ -5,6 +5,7 @@
 <span>Créé le <?= $post->created_at->format('d/m/Y H:i:s'); ?></span> par
 <span><?= isset($post->edited_at) && $post->edited_at->format('Y-m-d H:i'); ?></span>
 <span><?= $author->firstname; ?></span>
+<a href="/posts/<?= $post->id; ?>/edit">Editer</a>
 <?php $content = ob_get_clean(); ?>
 
 <?= self::render('common.base', ['content' => $content, 'title' => 'Courou']); ?>

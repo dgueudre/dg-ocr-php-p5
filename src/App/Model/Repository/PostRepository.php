@@ -77,6 +77,7 @@ class PostRepository
             WHERE id = :id;';
 
         Database::execute($query, [
+           'id' => $post->id,
            'title' => $post->title,
            'intro' => $post->intro,
            'content' => $post->content,

@@ -20,4 +20,11 @@ class Post
         $this->content = $content;
         $this->author_id = $author_id;
     }
+
+    public function modify(string $title, string $intro, string $content)
+    {
+        $this->title = $title;
+        $this->intro = $intro;
+        $this->content = $content;
+    }
 }

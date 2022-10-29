@@ -39,10 +39,9 @@ $routes = [
     new Route('/logout', AuthController::class, 'logout'),
     new Route('/register', AuthController::class, 'register'),
     new Route('/posts', PostController::class, 'list'),
-    new Route('/posts/:id/edit/:tata', PostController::class, 'edit'),
     new Route('/posts/:id', PostController::class, 'view'),
-    new Route('cmd/users/fixture', CmdController::class, 'userFixture'),
-    new Route('cmd/install', CmdController::class, 'install'),
+    new Route('/posts/:id/edit', PostController::class, 'edit'),
+    new Route('x/install', CmdController::class, 'install'),
 ];
 
 $url = $_SERVER['REQUEST_URI'] ?? $argv[1] ?? null;
