@@ -32,11 +32,10 @@ class BlogFixture
         $user = new User('Wilson', 'Toni', 'toni.wilson@example.com', 'skirt', UserRole::ADMIN);
         $user = UserRepository::save($user);
 
-        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
-        $post = PostRepository::save($post);
-
-        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
-        $post = PostRepository::save($post);
+        for ($i = 0; $i < 10; ++$i) {
+            $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
+            $post = PostRepository::save($post);
+        }
 
         $comment = new Comment(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
