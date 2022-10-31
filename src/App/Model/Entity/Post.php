@@ -9,7 +9,7 @@ class Post
     public string $intro;
     public string $content;
     public \DateTime $created_at;
-    public \DateTime $edited_at;
+    public ?\DateTime $edited_at = null;
     public readonly int $author_id;
     public int $nb_comment;
 

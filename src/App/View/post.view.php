@@ -2,9 +2,16 @@
 <h2><?= $post->title; ?></h2>
 <p><?= $post->intro; ?></p>
 <p><?= $post->content; ?></p>
-<span>Créé le <?= $post->created_at->format('d/m/Y H:i:s'); ?></span> par
-<span><?= isset($post->edited_at) && $post->edited_at->format('Y-m-d H:i'); ?></span>
-<span><?= $author->firstname; ?></span>
+<p>
+    <span>Créé le <?= $post->created_at->format('d/m/Y H:i:s'); ?></span>
+    <span> par <?= $author->firstname; ?></span>
+</p>
+<?php if($post->edited_at): ?>
+<p>
+    <span>Edité le <?=$post->edited_at->format('d/m/Y H:i:s'); ?></span>
+    <span> par <?= $author->firstname; ?></span>
+</p>
+<?php endif; ?>
 <a href="/posts/<?= $post->id; ?>/edit">Editer</a>
 
 <h2>Commentaires</h2>

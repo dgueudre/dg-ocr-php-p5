@@ -15,7 +15,7 @@ class PostRepository
         $new->nb_comment = $nb_comment;
         $new->created_at = new \DateTime($created_at);
         if ($edited_at) {
-            $edited_at = new \DateTime($edited_at);
+            $new->edited_at = new \DateTime($edited_at);
         }
 
         return $new;
