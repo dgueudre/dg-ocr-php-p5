@@ -38,13 +38,13 @@ class PostRepository
         INTO post(title, intro, content, _created_at, author_id)
         VALUES (:title, :intro, :content, :created_at, :author_id);';
 
-        $post->id = Database::insert($query, [
+        $post = Database::insert($query, [
             'title' => $post->title,
             'intro' => $post->intro,
             'content' => $post->content,
             'created_at' => SQL::date($post->created_at),
             'author_id' => $post->author_id,
-        ]);
+        ], $post);
 
         return $post;
     }

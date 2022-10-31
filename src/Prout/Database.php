@@ -61,11 +61,6 @@ class Database
         return self::$connection;
     }
 
-    public static function lastInsertId(): int
-    {
-        return self::execute('SELECT LAST_INSERT_ID() AS id;')->fetchColumn();
-    }
-
     public static function execute($query, $params = [], $needDb = true): \PDOStatement
     {
         $statement = self::get($needDb)->prepare($query);
@@ -74,11 +69,16 @@ class Database
         return $statement;
     }
 
-    public static function insert($query, $params): int
+    public static function insert($query, $params, $obj): object
     {
         self::execute($query, $params);
 
-        return self::lastInsertId();
+        $query = 'SELECT LAST_INSERT_ID() AS id;';
+
+        $statement = self::execute($query);
+        $statement->setFetchMode(\PDO::FETCH_INTO, $obj);
+
+        return $statement->fetch();
     }
 
     public static function fetchAll($query, $params, $class)

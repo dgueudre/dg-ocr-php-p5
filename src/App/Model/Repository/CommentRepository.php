@@ -39,13 +39,13 @@ class CommentRepository
         INTO comment(comment, _created_at, _status, post_id, author_id)
         VALUES (:comment, :created_at, :status, :post_id, :author_id);';
 
-        $comment->id = Database::insert($query, [
+        $comment = Database::insert($query, [
             'comment' => $comment->comment,
             'created_at' => SQL::date($comment->created_at),
             'status' => CommentStatus::PENDING->name,
             'post_id' => $comment->post_id,
             'author_id' => $comment->author_id,
-        ]);
+        ], $comment);
 
         return $comment;
     }

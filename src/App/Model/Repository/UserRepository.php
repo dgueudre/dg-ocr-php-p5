@@ -9,7 +9,6 @@ use Prout\SQL;
 
 class UserRepository
 {
-
     public static function truncate()
     {
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
@@ -38,13 +37,13 @@ class UserRepository
         INTO user(lastname, firstname, email, password, _role)
         VALUES (:lastname, :firstname, :email, :password, :role);';
 
-        $user->id = Database::insert($query, [
+        $user = Database::insert($query, [
             'lastname' => $user->lastname,
             'firstname' => $user->firstname,
             'email' => $user->email,
             'password' => password_hash($user->password, PASSWORD_DEFAULT),
             'role' => $user->role->name,
-        ]);
+        ], $user);
 
         return $user;
     }
