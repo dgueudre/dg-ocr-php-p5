@@ -85,18 +85,14 @@ class Database
     {
         $statement = self::execute($query, $params);
 
-        return $statement->fetchAll(\PDO::FETCH_FUNC, [$class, 'fromSQL']);
+        return $statement->fetchAll(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
     }
 
     public static function fetch($query, $params, $class)
     {
         $statement = self::execute($query, $params);
-        $result = $statement->fetch(\PDO::FETCH_NUM);
+        $statement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
 
-        if (!$result) {
-            return false;
-        }
-
-        return $class::fromSQL(...$result);
+        return $statement->fetch();
     }
 }

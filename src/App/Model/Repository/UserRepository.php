@@ -9,14 +9,6 @@ use Prout\SQL;
 
 class UserRepository
 {
-    public static function fromSQL(int $id, string $lastname, string $firstname, string $email, string $password, string $rawRole): User
-    {
-        $role = UserRole::from($rawRole);
-        $new = new User($lastname, $firstname, $email, $password, $role);
-        $new->id = $id;
-
-        return $new;
-    }
 
     public static function truncate()
     {
@@ -34,7 +26,7 @@ class UserRepository
             firstname VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             password VARCHAR(255) NOT NULL,
-            role '.SQL::enum(UserRole::class).' NOT NULL,
+            _role '.SQL::enum(UserRole::class).' NOT NULL,
             PRIMARY KEY (id)
         );';
         Database::execute($query);
@@ -43,7 +35,7 @@ class UserRepository
     public static function save(User $user): User
     {
         $query = 'INSERT 
-        INTO user(lastname, firstname, email, password, role)
+        INTO user(lastname, firstname, email, password, _role)
         VALUES (:lastname, :firstname, :email, :password, :role);';
 
         $user->id = Database::insert($query, [
@@ -65,7 +57,7 @@ class UserRepository
 
         return Database::fetch($query, [
             'id' => $id,
-        ], self::class);
+        ], User::class);
     }
 
     public static function findOneByEmail($email)
@@ -76,7 +68,7 @@ class UserRepository
 
         return Database::fetch($query, [
             'email' => $email,
-        ], self::class);
+        ], User::class);
     }
 
     public static function findOneByCredentials($email, $password)

@@ -8,19 +8,6 @@ use Prout\SQL;
 
 class PostRepository
 {
-    public static function fromSQL(int $id, string $title, string $intro, string $content, string $created_at, string|null $edited_at, int $author_id, int $nb_comment = 0): Post
-    {
-        $new = new Post($title, $intro, $content, $author_id);
-        $new->id = $id;
-        $new->nb_comment = $nb_comment;
-        $new->created_at = new \DateTime($created_at);
-        if ($edited_at) {
-            $new->edited_at = new \DateTime($edited_at);
-        }
-
-        return $new;
-    }
-
     public static function truncate()
     {
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
@@ -36,8 +23,8 @@ class PostRepository
             title VARCHAR(255) NOT NULL,
             intro VARCHAR(255) NOT NULL,
             content TEXT NOT NULL,
-            created_at VARCHAR(255) NOT NULL,
-            edited_at VARCHAR(255),
+            _created_at VARCHAR(255) NOT NULL,
+            _edited_at VARCHAR(255),
             author_id INT,
             PRIMARY KEY (id),
             CONSTRAINT post_user_FK FOREIGN KEY(author_id) REFERENCES user(id)
@@ -47,10 +34,8 @@ class PostRepository
 
     private static function insert(Post $post): Post
     {
-        $post->created_at = new \DateTime();
-
         $query = 'INSERT 
-        INTO post(title, intro, content, created_at, author_id)
+        INTO post(title, intro, content, _created_at, author_id)
         VALUES (:title, :intro, :content, :created_at, :author_id);';
 
         $post->id = Database::insert($query, [
@@ -68,13 +53,11 @@ class PostRepository
 
     private static function update(Post $post): Post
     {
-        $post->edited_at = new \DateTime();
-
         $query = 'UPDATE post SET
                 title = :title,
                 intro = :intro,
                 content = :content,
-                edited_at = :edited_at
+                _edited_at = :edited_at
             WHERE id = :id;';
 
         Database::execute($query, [
@@ -104,7 +87,7 @@ class PostRepository
             LEFT JOIN comment c ON c.post_id = p.id
             GROUP BY p.id;';
 
-        return Database::fetchAll($query, [], self::class);
+        return Database::fetchAll($query, [], Post::class);
     }
 
     public static function findOneById($id)
@@ -115,6 +98,6 @@ class PostRepository
 
         return Database::fetch($query, [
             'id' => $id,
-        ], self::class);
+        ], Post::class);
     }
 }

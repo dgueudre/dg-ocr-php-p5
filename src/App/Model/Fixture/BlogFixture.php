@@ -29,45 +29,45 @@ class BlogFixture
         UserRepository::truncate();
 
         // https://randomuser.me/
-        $user = new User('Wilson', 'Toni', 'toni.wilson@example.com', 'skirt', UserRole::ADMIN);
+        $user = User::create('Wilson', 'Toni', 'toni.wilson@example.com', 'skirt', UserRole::ADMIN);
         $user = UserRepository::save($user);
 
         for ($i = 0; $i < 10; ++$i) {
-            $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
+            $post = Post::create(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
             $post = PostRepository::save($post);
         }
 
-        $comment = new Comment(self::lorem(50), $post->id, $user->id);
+        $comment = Comment::create(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $user = new User('Chapman', 'Mathew', 'mathew.chapman@example.com', 'trucks', UserRole::ADMIN);
+        $user = User::create('Chapman', 'Mathew', 'mathew.chapman@example.com', 'trucks', UserRole::ADMIN);
         $user = UserRepository::save($user);
 
-        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
+        $post = Post::create(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
+        $post = Post::create(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $comment = new Comment(self::lorem(50), $post->id, $user->id);
+        $comment = Comment::create(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $post = new Post(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
+        $post = Post::create(self::lorem(25), self::lorem(50), self::lorem(), $user->id);
         $post = PostRepository::save($post);
 
-        $comment = new Comment(self::lorem(50), $post->id, $user->id);
+        $comment = Comment::create(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $user = new User('Harper', 'Shannon', 'shannon.harper@example.com', 'wrestler', UserRole::USER);
+        $user = User::create('Harper', 'Shannon', 'shannon.harper@example.com', 'wrestler', UserRole::USER);
         $user = UserRepository::save($user);
 
-        $comment = new Comment(self::lorem(50), $post->id, $user->id);
+        $comment = Comment::create(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
 
-        $user = new User('Henry', 'Minnie', 'minnie.henry@example.com', 'ventura', UserRole::USER);
+        $user = User::create('Henry', 'Minnie', 'minnie.henry@example.com', 'ventura', UserRole::USER);
         $user = UserRepository::save($user);
 
-        $comment = new Comment(self::lorem(50), $post->id, $user->id);
+        $comment = Comment::create(self::lorem(50), $post->id, $user->id);
         $comment = CommentRepository::save($comment);
     }
 }

@@ -76,7 +76,7 @@ class PostController
         }
 
         if ('create' === $mode) {
-            $post = new Post($form->title, $form->intro, $form->content, $user->id);
+            $post = Post::create($form->title, $form->intro, $form->content, $user->id);
         } else {
             $post->modify($form->title, $form->intro, $form->content);
         }

@@ -66,7 +66,7 @@ class AuthController
             return Template::render('auth.register', ['form' => $form]);
         }
 
-        $user = new User($form->lastname, $form->firstname, $form->email, $form->password, UserRole::USER);
+        $user = User::create($form->lastname, $form->firstname, $form->email, $form->password, UserRole::USER);
 
         UserRepository::save($user);
 

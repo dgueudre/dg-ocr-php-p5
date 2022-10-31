@@ -9,16 +9,6 @@ use Prout\SQL;
 
 class CommentRepository
 {
-    public static function fromSQL(int $id, string $comment, string $created_at, string $rawStatus, string $post_id, int $author_id): Comment
-    {
-        $new = new Comment($comment, $post_id, $author_id);
-        $new->status = CommentStatus::from($rawStatus);
-        $new->id = $id;
-        $new->created_at = new \DateTime($created_at);
-
-        return $new;
-    }
-
     public static function truncate()
     {
         $query = 'SET FOREIGN_KEY_CHECKS = 0;
@@ -32,8 +22,8 @@ class CommentRepository
         $query = 'CREATE TABLE comment (
             id INT AUTO_INCREMENT,
             comment VARCHAR(255) NOT NULL,
-            created_at VARCHAR(255) NOT NULL,
-            status '.SQL::enum(CommentStatus::class).' NOT NULL,
+            _created_at VARCHAR(255) NOT NULL,
+            _status '.SQL::enum(CommentStatus::class).' NOT NULL,
             post_id INT,
             author_id INT,
             PRIMARY KEY (id),
@@ -46,11 +36,12 @@ class CommentRepository
     public static function save(Comment $comment): Comment
     {
         $query = 'INSERT 
-        INTO comment(comment, created_at, status, post_id, author_id)
-        VALUES (:comment, NOW(), :status, :post_id, :author_id);';
+        INTO comment(comment, _created_at, _status, post_id, author_id)
+        VALUES (:comment, :created_at, :status, :post_id, :author_id);';
 
         $comment->id = Database::insert($query, [
             'comment' => $comment->comment,
+            'created_at' => SQL::date($comment->created_at),
             'status' => CommentStatus::PENDING->name,
             'post_id' => $comment->post_id,
             'author_id' => $comment->author_id,
@@ -64,11 +55,11 @@ class CommentRepository
         $query = 'SELECT *
             FROM comment
             WHERE post_id = :postId
-            AND status = COALESCE(:status, status)';
+            AND _status = COALESCE(:status, _status)';
 
         return Database::fetchAll($query, [
             'postId' => $postId,
             'status' => $status->name ?? null,
-        ], CommentRepository::class);
+        ], Comment::class);
     }
 }
