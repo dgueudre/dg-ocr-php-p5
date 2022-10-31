@@ -22,9 +22,9 @@ class PostController
         ]);
     }
 
-    public function view($params)
+    public function view(int $id)
     {
-        $post = PostRepository::findOneById($params['id']);
+        $post = PostRepository::findOneById($id);
         $author = UserRepository::findOneById($post->author_id);
 
         return Template::render('post.view', [
@@ -91,9 +91,8 @@ class PostController
         return self::form('create', 'créer', '/posts');
     }
 
-    public function edit($params)
+    public function edit($id)
     {
-        $id = $params['id'];
         $back_url = strtr('/posts/{id}', ['{id}' => $id]);
 
         return self::form('edit', 'modifier', $back_url, $id);

@@ -6,9 +6,7 @@ class Template
 {
     public static function render($file, $params = [])
     {
-        foreach ($params as $key => $value) {
-            $$key = $value;
-        }
+        extract($params);
 
         ob_start();
         include "src/App/View/$file.php";

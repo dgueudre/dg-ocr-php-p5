@@ -51,6 +51,18 @@ class Route
         $controller = $this->controller;
         $action = $this->action;
 
-        return (new $controller())->$action($this->params);
+        $refFunction = new \ReflectionMethod($controller, $action);
+
+        $parameters = $refFunction->getParameters();
+
+        $params = [];
+        foreach ($parameters as $parameter) {
+            $param = $this->params[$parameter->getName()] ?? null;
+            if (null !== $param) {
+                $params[] = $param;
+            }
+        }
+
+        return (new $controller())->$action(...$params);
     }
 }
