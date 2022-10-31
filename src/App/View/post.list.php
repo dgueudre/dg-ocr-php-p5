@@ -5,7 +5,7 @@
 	<?php foreach ($posts as $post): ?>
 	<li>
 		<div class='post'>
-			<h2><?= $post->title; ?></h2>
+			<h2><?= $post->title; ?> (<?= $post->nb_comment; ?>)</h2>
 			<p><?= $post->intro; ?></p>
 			<span><?= $post->created_at->format('Y-m-d H:i'); ?></span>
 			<a href="/posts/<?= $post->id; ?>">Voir plus</a>

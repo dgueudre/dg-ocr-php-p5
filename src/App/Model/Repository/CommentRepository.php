@@ -58,4 +58,17 @@ class CommentRepository
 
         return $comment;
     }
+
+    public static function findAllByPostId($postId, CommentStatus $status = null)
+    {
+        $query = 'SELECT *
+            FROM comment
+            WHERE post_id = :postId
+            AND status = COALESCE(:status, status)';
+
+        return Database::fetchAll($query, [
+            'postId' => $postId,
+            'status' => $status->name ?? null,
+        ], CommentRepository::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Controller\Form\PostForm;
 use App\Model\Entity\Post;
 use App\Model\Entity\User;
 use App\Model\Enum\UserRole;
+use App\Model\Repository\CommentRepository;
 use App\Model\Repository\PostRepository;
 use App\Model\Repository\UserRepository;
 use Prout\Alert;
@@ -26,11 +27,9 @@ class PostController
     {
         $post = PostRepository::findOneById($id);
         $author = UserRepository::findOneById($post->author_id);
+        $comments = CommentRepository::findAllByPostId($post->id);
 
-        return Template::render('post.view', [
-            'post' => $post,
-            'author' => $author,
-        ]);
+        return Template::render('post.view', compact('post', 'author', 'comments'));
     }
 
     private function form($mode, $label_action, $back_url, $id = 0)

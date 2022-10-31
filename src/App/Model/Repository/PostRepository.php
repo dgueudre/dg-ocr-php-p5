@@ -8,10 +8,11 @@ use Prout\SQL;
 
 class PostRepository
 {
-    public static function fromSQL(int $id, string $title, string $intro, string $content, string $created_at, string|null $edited_at, int $author_id): Post
+    public static function fromSQL(int $id, string $title, string $intro, string $content, string $created_at, string|null $edited_at, int $author_id, int $nb_comment = 0): Post
     {
         $new = new Post($title, $intro, $content, $author_id);
         $new->id = $id;
+        $new->nb_comment = $nb_comment;
         $new->created_at = new \DateTime($created_at);
         if ($edited_at) {
             $edited_at = new \DateTime($edited_at);
@@ -98,7 +99,10 @@ class PostRepository
 
     public static function findAll()
     {
-        $query = 'SELECT * FROM post;';
+        $query = 'SELECT p.*, COUNT(c.id) as nb_comment
+            FROM post p
+            LEFT JOIN comment c ON c.post_id = p.id
+            GROUP BY p.id;';
 
         return Database::fetchAll($query, [], self::class);
     }
