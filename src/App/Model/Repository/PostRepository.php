@@ -46,8 +46,6 @@ class PostRepository
             'author_id' => $post->author_id,
         ]);
 
-        $post->id = Database::lastInsertId();
-
         return $post;
     }
 
