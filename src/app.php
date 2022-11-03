@@ -2,6 +2,7 @@
 
 use App\Controller\AuthController;
 use App\Controller\CmdController;
+use App\Controller\CommentController;
 use App\Controller\PostController;
 use Prout\Database;
 use Prout\DotEnv;
@@ -42,6 +43,7 @@ $routes = [
     new Route('/posts/create', PostController::class, 'create'),
     new Route('/posts/:id', PostController::class, 'view'),
     new Route('/posts/:id/edit', PostController::class, 'edit'),
+    new Route('/posts/:id/comment', CommentController::class, 'create'),
     new Route('x/install', CmdController::class, 'install'),
 ];
 
