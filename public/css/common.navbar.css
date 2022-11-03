@@ -58,6 +58,11 @@ nav input:hover~i {
     color: var(--color-secondary-light);
 }
 
+nav>a {
+    height: 80%;
+    padding: 0 16px;
+}
+
 nav input {
     opacity: 0;
     z-index: 2;
@@ -70,9 +75,8 @@ nav i {
     padding: 0 16px;
 }
 
-nav>img {
-    height: 80%;
-    padding: 0 16px;
+nav img {
+    height: 100%;
 }
 
 nav li {

@@ -1,12 +1,7 @@
-<!-- 
-Thanks Erik Terwan for inspiration
-https://erikterwan.com
--->
-
 <?php $user_label = $user ? sprintf('%s %s', $user->firstname, $user->lastname) : 'Déconnecté'; ?>
 
 <nav role="navigation">
-	<img src="/img/logo-davdev.png" alt="logo davdev">
+	<a href="/"><img src="/img/logo-davdev.png" alt="logo davdev" /></a>
 	<input type="checkbox" />
 	<i class="fa-solid fa-bars burger"></i>
 	<i class="fa-solid fa-xmark cross"></i>
